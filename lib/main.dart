@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
-
-import 'dog_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sqlite/presenation/create_dog/create_dog_bloc.dart';
+import 'package:sqlite/presenation/dog_detail/dog_bloc.dart';
+import 'package:sqlite/presenation/dog_list/dog_list_bloc.dart';
+import 'package:sqlite/presenation/dog_list/dog_list_page.dart';
 
 void main() {
   // Avoid errors caused by flutter upgrade.
 // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<DogListBloc>(
+          create: (_) => DogListBloc(),
+        ),
+        BlocProvider<CreateDogBloc>(
+          create: (_) => CreateDogBloc(),
+        ),
+        BlocProvider<DogBloc>(
+          create: (_) => DogBloc(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +48,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const DogPage(),
+      home: const DogListPage(),
     );
   }
 }
